@@ -7,13 +7,11 @@ function todo() {
 todo.prototype = {
   all: function(res, index) {
     this.db.connect("mongodb://localhost:27017/db", function(err, db) {
-      var todos = []
       if(err) {
         console.log("We fucked up yo!");
       }
       db.collection('stuff').find().toArray(function(err, docs) {
-        todos = docs
-        index(res, todos)
+        index(res, docs)
       })
     })
   },
@@ -33,7 +31,6 @@ todo.prototype = {
 
   show: function(res, callback, id) {
     this.db.connect("mongodb://localhost:27017/db", function(err, db) {
-      var todo 
       if(err) {
         console.log("We fucked up yo!");
       }
@@ -48,8 +45,7 @@ todo.prototype = {
   },
 
   edit: function(res, callback, id) {
-    this.db.connect("mongodb://localhost:27017/db", function(err, db) {
-      var todo 
+    this.db.connect("mongodb://localhost:27017/db", function(err, db) { 
       if(err) {
         console.log("We fucked up yo!");
       }
@@ -64,8 +60,7 @@ todo.prototype = {
   },
 
   update: function(data, id) {
-    this.db.connect("mongodb://localhost:27017/db", function(err, db) {
-      var todo 
+    this.db.connect("mongodb://localhost:27017/db", function(err, db) { 
       if(err) {
         console.log("We fucked up yo!");
       }
@@ -76,5 +71,19 @@ todo.prototype = {
         }
       })
     })
+  },
+
+  destroy: function(id) {
+    this.db.connect("mongodb://localhost:27017/db", function(err, db) {
+      if(err) {
+        console.log("We fucked up yo!");
+      }
+      var ObjectID = require('mongodb').ObjectID
+      db.collection('stuff').remove({_id: ObjectID.createFromHexString(id)}, function(err) {
+        if(err) {
+        console.log("We fucked up yo!");
+        }
+      })
+    }) 
   }
 }

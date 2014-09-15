@@ -21,6 +21,11 @@ server.get('/:id/edit', function(req, res) {
   todo.edit(res, edit, req.params.id)
 })
 
+server.get('/:id/delete', function(req, res) {
+  todo.destroy(req.params.id)
+  res.redirect('/')
+})
+
 server.post('/new', function(req, res) {
   req.on('data', function (chunk) {
     var body = chunk.toString()
@@ -31,7 +36,6 @@ server.post('/new', function(req, res) {
 })
 
 server.post('/:id', function(req, res) {
-  console.log('put')
   req.on('data', function (chunk) {
     var body = chunk.toString()
     var form = querystring.parse(body)
@@ -39,6 +43,7 @@ server.post('/:id', function(req, res) {
   })
   res.redirect('/' + req.params.id)
 })
+
 
 function newTodo(formdata) {
   var data = {title: formdata['title'],
