@@ -13,10 +13,10 @@ todo.prototype = {
       }
       db.collection('stuff').find().toArray(function(err, docs) {
         todos = docs
+        index(res, todos)
       })
       res.locals.todos = todos
       console.log('inside db function ' +res.locals.todos)
-      index(res)
     })
   },
 

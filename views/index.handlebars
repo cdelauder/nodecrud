@@ -12,11 +12,9 @@
     </form>
 
     <div>
-      {{#if res.locals.todos}}
-        {{#each res.locals.todos}}
-          <a href="">{{this.title}}</a>
-        {{/each}}
-      {{/if}}  
+      {{#each todos}}
+        <a href="{{this._id}}">{{this.title}}</a>
+      {{/each}}
     </div>
   </body>
 </html>

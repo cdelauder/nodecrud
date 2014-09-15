@@ -1,13 +1,15 @@
 var express = require('express')
+var exphbs = require('express-handlebars')
 var server = express()
 var todoModule = require('./js/model.js')
 var todo = new todoModule()
 var querystring = require('querystring')
+server.engine('handlebars', exphbs({defaultLayout: 'main'}));
+server.set('view engine', 'handlebars');
 
 
 
 server.get('/', function(req, res) {
-  res.set('Content-Type', 'text/html');
   res.locals.todos = todo.all(res, index)
   console.log('server ' + res.locals.todos)
 })
@@ -27,8 +29,8 @@ function newTodo(formdata) {
   return data
 }
 
-var index = function (res) {
-  res.sendFile(__dirname + '/index.html')
+var index = function (res, data) {
+  res.render('index', {todos: data})
   console.log('server ' + res.locals.todos)
 }
 
