@@ -15,8 +15,6 @@ todo.prototype = {
         todos = docs
         index(res, todos)
       })
-      res.locals.todos = todos
-      console.log('inside db function ' +res.locals.todos)
     })
   },
 
@@ -30,7 +28,53 @@ todo.prototype = {
           console.log(err)
         }
       })
-    });
-    
+    });  
+  },
+
+  show: function(res, callback, id) {
+    this.db.connect("mongodb://localhost:27017/db", function(err, db) {
+      var todo 
+      if(err) {
+        console.log("We fucked up yo!");
+      }
+      var ObjectID = require('mongodb').ObjectID
+      db.collection('stuff').findOne({_id: ObjectID.createFromHexString(id)}, function(err, doc) {
+        if(err) {
+        console.log("We fucked up yo!");
+        }
+        callback(res, doc)
+      })
+    })
+  },
+
+  edit: function(res, callback, id) {
+    this.db.connect("mongodb://localhost:27017/db", function(err, db) {
+      var todo 
+      if(err) {
+        console.log("We fucked up yo!");
+      }
+      var ObjectID = require('mongodb').ObjectID
+      db.collection('stuff').findOne({_id: ObjectID.createFromHexString(id)}, function(err, doc) {
+        if(err) {
+        console.log("We fucked up yo!");
+        }
+        callback(res, doc)
+      })
+    })
+  },
+
+  update: function(data, id) {
+    this.db.connect("mongodb://localhost:27017/db", function(err, db) {
+      var todo 
+      if(err) {
+        console.log("We fucked up yo!");
+      }
+      var ObjectID = require('mongodb').ObjectID
+      db.collection('stuff').update({_id: ObjectID.createFromHexString(id)}, {$set: data}, function(err, doc) {
+        if(err) {
+        console.log("We fucked up yo!");
+        }
+      })
+    })
   }
 }

@@ -10,8 +10,15 @@ server.set('view engine', 'handlebars');
 
 
 server.get('/', function(req, res) {
-  res.locals.todos = todo.all(res, index)
-  console.log('server ' + res.locals.todos)
+  todo.all(res, index)
+})
+
+server.get('/:id', function(req, res) {
+  todo.show(res, show, req.params.id)
+})
+
+server.get('/:id/edit', function(req, res) {
+  todo.edit(res, edit, req.params.id)
 })
 
 server.post('/new', function(req, res) {
@@ -23,6 +30,16 @@ server.post('/new', function(req, res) {
   res.redirect('/')
 })
 
+server.post('/:id', function(req, res) {
+  console.log('put')
+  req.on('data', function (chunk) {
+    var body = chunk.toString()
+    var form = querystring.parse(body)
+    todo.update(form, req.params.id)
+  })
+  res.redirect('/' + req.params.id)
+})
+
 function newTodo(formdata) {
   var data = {title: formdata['title'],
               content: formdata['content']}
@@ -31,7 +48,14 @@ function newTodo(formdata) {
 
 var index = function (res, data) {
   res.render('index', {todos: data})
-  console.log('server ' + res.locals.todos)
+}
+
+var show = function (res, data) {
+  res.render('show', {todo: data})
+}
+
+var edit = function (res, data) {
+  res.render('edit', {todo: data})
 }
 
 server.listen(3000)
