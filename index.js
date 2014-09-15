@@ -8,7 +8,8 @@ var querystring = require('querystring')
 
 server.get('/', function(req, res) {
   res.set('Content-Type', 'text/html');
-  res.sendFile(__dirname + '/index.html')
+  res.locals.todos = todo.all(res, index)
+  console.log('server ' + res.locals.todos)
 })
 
 server.post('/new', function(req, res) {
@@ -17,6 +18,7 @@ server.post('/new', function(req, res) {
     var form = querystring.parse(body)
     todo.create(newTodo(form))
   })
+  res.redirect('/')
 })
 
 function newTodo(formdata) {
@@ -25,5 +27,9 @@ function newTodo(formdata) {
   return data
 }
 
+var index = function (res) {
+  res.sendFile(__dirname + '/index.html')
+  console.log('server ' + res.locals.todos)
+}
 
 server.listen(3000)
