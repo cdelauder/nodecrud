@@ -30,7 +30,7 @@ server.post('/new', function(req, res) {
   req.on('data', function (chunk) {
     var body = chunk.toString()
     var form = querystring.parse(body)
-    todo.create(newTodo(form))
+    todo.create(form)
   })
   res.redirect('/')
 })
@@ -44,12 +44,6 @@ server.post('/:id', function(req, res) {
   res.redirect('/' + req.params.id)
 })
 
-
-function newTodo(formdata) {
-  var data = {title: formdata['title'],
-              content: formdata['content']}
-  return data
-}
 
 var index = function (res, data) {
   res.render('index', {todos: data})
